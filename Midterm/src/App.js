@@ -1,24 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Register from './components/Authorization/Register';
+import Login from './components/Authorization/Login';
+import MembersPage from './components/Members/MembersPage';
+import AdminPage from './components/Admin/AdminPage';
+import { Container, AppBar, Toolbar, Typography, Button } from '@mui/material';
 
 function App() {
+  const user = useSelector((state) => state.auth.user);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            E-commerce App
+          </Typography>
+          <Button color="inherit" href="/">
+            Home
+          </Button>
+          <Button color="inherit" href="/login">
+            Login
+          </Button>
+          <Button color="inherit" href="/register">
+            Register
+          </Button>
+          {user && (
+            <Button color="inherit" href="/adminlogin">
+              Admin
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      <Container sx={{ mt: 5 }}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} /> 
+          <Route path="/members" element={<MembersPage />} />
+          <Route path="/adminlogin" element={<AdminPage />} />
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Container>
+    </Router>
   );
 }
 
