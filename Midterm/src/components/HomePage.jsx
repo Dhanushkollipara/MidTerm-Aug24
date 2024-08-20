@@ -168,7 +168,7 @@ function HomePage() {
                   <Paper style={{ padding: 16, marginTop: 8 }}>
                     <Typography variant="body1"><b>Code:</b> {data.code}</Typography>
                     <Typography variant="body1"><b>Name:</b> {data.name}</Typography>
-                    <Typography variant="body1"><b>Description:</b> {data.description}</Typography>
+                    <Typography variant="body1"><b>Description:</b> {data.excerpt}</Typography>
                     <Typography variant="body1"><b>Status:</b> {data.status ? 'Active' : 'Inactive'}</Typography>
                     <Typography variant="body1"><b>Price:</b> {data.price}</Typography>
                     <Typography variant="body1"><b>Created At:</b> {formatCreatedAt(data.created_at)}</Typography>
