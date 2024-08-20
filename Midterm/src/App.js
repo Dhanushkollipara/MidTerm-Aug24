@@ -1,15 +1,17 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Register from './components/Authorization/Register';
-import Login from './components/Authorization/Login';
-import MembersPage from './components/Members/MembersPage';
-import AdminPage from './components/Admin/AdminPage';
-import { Container, AppBar, Toolbar, Typography, Button } from '@mui/material';
-import Addproducts from './components/Admin/AddProducts';
-import AddCategory from './components/Admin/AddCategory';
-import HomePage from './components/HomePage';
+import { Container, AppBar, Toolbar, Typography, Button, CircularProgress } from '@mui/material';
 import ProtectedRoute from './ProtectedRoute';
+
+// Lazy loading components
+const Register = lazy(() => import('./components/Authorization/Register'));
+const Login = lazy(() => import('./components/Authorization/Login'));
+const MembersPage = lazy(() => import('./components/Members/MembersPage'));
+const AdminPage = lazy(() => import('./components/Admin/AdminPage'));
+const Addproducts = lazy(() => import('./components/Admin/AddProducts'));
+const AddCategory = lazy(() => import('./components/Admin/AddCategory'));
+const HomePage = lazy(() => import('./components/HomePage'));
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -48,18 +50,20 @@ function App() {
       </AppBar>
 
       <Container sx={{ mt: 5 }}>
-        <Routes>
-          <Route path="/login" element={<Login />} /> 
-          <Route path="/register" element={<Register />} />
-          <Route path="/members" element={<MembersPage />} />
-          <Route path="/admin/add-products" element={<Addproducts />} />
-          <Route path="/admin/add-category" element={<AddCategory />} />
-          <Route path="/adminlogin" element={<ProtectedRoute>
-                  <AdminPage />
-                </ProtectedRoute>} />
-          <Route path="/" element={<HomePage/>} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <Suspense fallback={<CircularProgress />}>
+          <Routes>
+            <Route path="/login" element={<Login />} /> 
+            <Route path="/register" element={<Register />} />
+            <Route path="/members" element={<MembersPage />} />
+            <Route path="/admin/add-products" element={<Addproducts />} />
+            <Route path="/admin/add-category" element={<AddCategory />} />
+            <Route path="/adminlogin" element={<ProtectedRoute>
+                    <AdminPage />
+                  </ProtectedRoute>} />
+            <Route path="/" element={<HomePage/>} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Suspense>
       </Container>
     </Router>
   );
